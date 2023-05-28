@@ -1,14 +1,34 @@
 import { KeyboardAvoidingView, StyleSheet, Text, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StatusBar } from 'expo-status-bar';
 import { Button, Input, Image } from '@rneui/base'
+import { auth } from '../firebase';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 const LoginScreen = ({navigation}) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged((userCredential) => {
+            if(userCredential){
+                navigation.replace("Home")
+            }
+        });
+        return unsubscribe;
+    }, [])
     const signIn = () => {
-
+    const auth = getAuth();
+    signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+    // Signed in
+    const user = userCredential.user;
+    
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+  });
     }
     return (
         <KeyboardAvoidingView style={styles.container}>
@@ -16,8 +36,7 @@ const LoginScreen = ({navigation}) => {
             <Image source={require('../src/img/chat.png')}
                 style={styles.logo}
             />
-            <Text>PAREI EM 1:07</Text>
-            <Text>https://www.youtube.com/watch?v=MJzmZ9qmdaE&t=1483s</Text>
+            
             <View style={styles.inputContainer}>
                 <Input
                     placeholder='Email'

@@ -3,11 +3,16 @@ import { Button, Input, Image } from '@rneui/base'
 import React, { useLayoutEffect, useState } from 'react'
 import { Icon } from '@rneui/themed'
 
+import { auth, createUserWithEmailAndPassword } from '../firebase'
+
+
+
 const RegisterScreen = ({navigation}) => {
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [imageUrl, setImageUrl] = useState("")
+
 /*
  useLayoutEffect(() =>{
   navigation.setOptions({
@@ -16,7 +21,20 @@ const RegisterScreen = ({navigation}) => {
  }, [navigation]);
  */
   const register = () => {
-
+    createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+    // Signed in
+    userCredential.user.update({
+      displayName: name,
+      photoURL: imageUrl || "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png"
+    });
+    // ...
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // ..
+  });
   }
   return (
     <KeyboardAvoidingView behavior='padding' style={styles.container}>
