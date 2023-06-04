@@ -20,6 +20,7 @@ const CustomListItem = ({id, chatName, enterChat}) => {
                 teste de sub titulo
             </ListItem.Subtitle>
         </ListItem.Content>
+        
     </ListItem>
   )
 }

@@ -3,7 +3,7 @@ import { Button, Input, Image } from '@rneui/base'
 import React, { useLayoutEffect, useState } from 'react'
 import { Icon } from '@rneui/themed'
 
-import { auth, createUserWithEmailAndPassword } from '../firebase'
+import { auth, createUserWithEmailAndPassword, updateProfile } from '../firebase'
 
 
 
@@ -23,19 +23,26 @@ const RegisterScreen = ({navigation}) => {
   const register = () => {
     createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-    // Signed in
-    userCredential.user.update({
-      displayName: name,
-      photoURL: imageUrl || "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png"
+      updateProfile(userCredential.user, {
+        displayName: name,
+        photoURL: imageUrl || "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png"
+      })
+        .then(() => {
+          // Atualização do perfil concluída com sucesso
+          alert("Perfil Criado com sucesso!");
+        })
+        .catch((error) => {
+          // Ocorreu um erro ao atualizar o perfil
+          alert("Erro ao atualizar o perfil:", error);
+        });
+        console.log(userCredential.user)
+    })
+    .catch((error) => {
+      // Ocorreu um erro na criação do usuário
+      alert("Erro ao criar usuário:", error);
     });
-    // ...
-  })
-  .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    // ..
-  });
   }
+  
   return (
     <KeyboardAvoidingView behavior='padding' style={styles.container}>
       <Text style={styles.texto}>
@@ -68,7 +75,7 @@ const RegisterScreen = ({navigation}) => {
           value={imageUrl}
           onChangeText={(text) => setImageUrl(text)}
           onSubmitEditing={register}
-        />
+        /> 
       </View>
       <Button containerStyle={styles.button} raised onPress={register} title="Cadastre-se" />
       

@@ -1,4 +1,4 @@
-import { KeyboardAvoidingView, StyleSheet, Text, View } from 'react-native'
+import { KeyboardAvoidingView, StyleSheet, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { StatusBar } from 'expo-status-bar';
 import { Button, Input, Image } from '@rneui/base'
@@ -29,6 +29,7 @@ const LoginScreen = ({navigation}) => {
   .catch((error) => {
     const errorCode = error.code;
     const errorMessage = error.message;
+    alert("Login e/ou Senha inválidos")
   });
     }
     return (
