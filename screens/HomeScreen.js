@@ -1,8 +1,9 @@
 import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useLayoutEffect } from 'react'
 import CustomListItem from '../components/CustomListItem';
+import Icon from 'react-native-vector-icons/EvilIcons';
 import { StatusBar } from 'expo-status-bar';
-import { auth, db } from '../firebase'
+import { auth } from '../firebase'
 import { Avatar } from '@rneui/themed';
 import { signOut } from 'firebase/auth';
 
@@ -36,9 +37,9 @@ const HomeScreen = ({ navigation }) => {
       headerRight: () => (
         <View style={{ marginRight: 20 }}>
           <TouchableOpacity onPress={sair}>
-          <Text>Sair</Text>
+            <Text>Sair</Text>
           </TouchableOpacity>
-          
+
         </View>
       )
     })
@@ -46,17 +47,33 @@ const HomeScreen = ({ navigation }) => {
 
 
   return (
-    <SafeAreaView>
-      <StatusBar style="light" />
-      <ScrollView>
-        <CustomListItem />
-        <Text>{auth.currentUser?.displayName}</Text>
-        <Text>{auth.currentUser?.photoURL}</Text>
-      </ScrollView>
-    </SafeAreaView>
+    <View style={styles.container}>
+      <SafeAreaView>
+        <StatusBar style="light" />
+        <ScrollView>
+          <CustomListItem />
+          <TouchableOpacity style={styles.addChatButton}>
+            <Icon name="comment" size={70} style={styles.addChatIcon} />
+          </TouchableOpacity>
+        </ScrollView>
+      </SafeAreaView>
+    </View>
   )
 }
 
 export default HomeScreen
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  addChatButton: {
+    position: 'relative',
+    alignItems:'flex-end',
+    marginTop:"140%",
+  },
+  addChatIcon: {
+    color: "#27408B",
+    height: 62,
+  },
+})
